@@ -26,5 +26,10 @@ namespace CqrsPattern.Domain.Users.Handlers
         {
             _logger.LogInformation("USER PASSWORD UPDATED");
         }
+
+        public void Handle(UserRemoved notification)
+        {
+            _logger.LogInformation("USER REMOVED");
+        }
     }
 }

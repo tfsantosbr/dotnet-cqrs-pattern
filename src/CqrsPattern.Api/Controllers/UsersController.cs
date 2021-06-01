@@ -61,6 +61,17 @@ namespace CqrsPattern.Api.Controllers
             return Ok(userDetails);
         }
 
+        [HttpDelete]
+        public IActionResult RemoveUser(Guid userId)
+        {
+            if (!_userRepository.AnyUser(userId))
+                return NotFound();
+
+            _handler.Handle(new RemoveUser { Id = userId });
+
+            return NoContent();
+        }
+
         [HttpPut("details")]
         public IActionResult UpdateUserDetails(UpdateUserDetails request)
         {

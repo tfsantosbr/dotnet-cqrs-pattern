@@ -107,5 +107,26 @@ namespace CqrsPattern.Domain.Users.Handlers
 
             _userEventsHandler.Handle(userPasswordUpdated);
         }
+
+        public void Handle(RemoveUser request)
+        {
+            // validations
+
+            var user = _userRepository.GetById(request.Id);
+
+            if (user is null)
+                throw new ArgumentNullException(nameof(user));
+
+            _userRepository.Remove(user);
+
+            // send event
+
+            var userRemoved = new UserRemoved
+            {
+                Id = user.Id
+            };
+
+            _userEventsHandler.Handle(userRemoved);
+        }
     }
 }
