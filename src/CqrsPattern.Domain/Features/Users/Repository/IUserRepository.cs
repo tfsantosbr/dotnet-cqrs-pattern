@@ -1,6 +1,6 @@
 using System;
 using CqrsPattern.Domain.Features.Users.Models;
-using NotificationPattern.Domain.Entities;
+using CqrsPattern.Domain.Features.Users;
 
 namespace CqrsPattern.Domain.Features.Users.Repository;
 

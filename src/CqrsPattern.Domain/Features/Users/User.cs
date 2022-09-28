@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NotificationPattern.Domain.Entities;
+namespace CqrsPattern.Domain.Features.Users;
 
 public class User
 {

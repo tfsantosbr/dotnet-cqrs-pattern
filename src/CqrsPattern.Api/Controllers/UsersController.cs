@@ -3,7 +3,7 @@ using CqrsPattern.Domain.Features.Users.Commands;
 using CqrsPattern.Domain.Features.Users.Models;
 using CqrsPattern.Domain.Features.Users.Repository;
 using Microsoft.AspNetCore.Mvc;
-using NotificationPattern.Domain.Entities;
+using CqrsPattern.Domain.Features.Users;
 
 namespace CqrsPattern.Api.Controllers;
 
@@ -18,10 +18,10 @@ public class UsersController : ControllerBase
     private readonly ICommandHandler<RemoveUser> _removeUserCommandHandler;
 
     public UsersController(
-        IUserRepository userRepository, 
-        ICommandHandler<CreateUser, User> createUserCommandHandler, 
-        ICommandHandler<UpdateUserDetails> updateUserDetailsCommandHandler, 
-        ICommandHandler<UpdateUserPassword> updateUserPasswordCommandHandler, 
+        IUserRepository userRepository,
+        ICommandHandler<CreateUser, User> createUserCommandHandler,
+        ICommandHandler<UpdateUserDetails> updateUserDetailsCommandHandler,
+        ICommandHandler<UpdateUserPassword> updateUserPasswordCommandHandler,
         ICommandHandler<RemoveUser> removeUserCommandHandler)
     {
         _userRepository = userRepository;
@@ -76,7 +76,7 @@ public class UsersController : ControllerBase
         return Ok(userDetails);
     }
 
-    [HttpDelete]
+    [HttpDelete("{userId}")]
     public IActionResult RemoveUser(Guid userId)
     {
         if (!_userRepository.AnyUser(userId))
@@ -87,9 +87,11 @@ public class UsersController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("details")]
-    public IActionResult UpdateUserDetails(UpdateUserDetails request)
+    [HttpPut("{userId}/details")]
+    public IActionResult UpdateUserDetails(Guid userId, UpdateUserDetails request)
     {
+        request.Id = userId;
+
         if (!_userRepository.AnyUser(request.Id))
         {
             return NotFound();
@@ -100,9 +102,11 @@ public class UsersController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("password")]
-    public IActionResult UpdateUserPassword(UpdateUserPassword request)
+    [HttpPut("{userId}/password")]
+    public IActionResult UpdateUserPassword(Guid userId, UpdateUserPassword request)
     {
+        request.Id = userId;
+        
         if (!_userRepository.AnyUser(request.Id))
         {
             return NotFound();

@@ -2,7 +2,7 @@ using CqrsPattern.Domain.Base.Handlers;
 using CqrsPattern.Domain.Features.Users.Commands;
 using CqrsPattern.Domain.Features.Users.Events;
 using CqrsPattern.Domain.Features.Users.Repository;
-using NotificationPattern.Domain.Entities;
+using CqrsPattern.Domain.Features.Users;
 
 namespace CqrsPattern.Domain.Features.Users.Handlers.CommandHandlers;
 

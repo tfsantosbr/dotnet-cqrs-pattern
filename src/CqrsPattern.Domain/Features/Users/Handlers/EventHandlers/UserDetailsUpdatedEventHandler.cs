@@ -15,7 +15,7 @@ public class UserDetailsUpdatedEventHandler : IEventHandler<UserDetailsUpdated>
 
     public Task Handle(UserDetailsUpdated eventData, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("USER UPDATED");
+        _logger.LogInformation("USER DETAILS UPDATED");
 
         // send e-mail...
         // send message to a message broker...
