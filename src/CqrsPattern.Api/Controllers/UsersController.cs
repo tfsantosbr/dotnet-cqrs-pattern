@@ -1,6 +1,5 @@
 ﻿using CqrsPattern.Domain.Base.Handlers;
 using CqrsPattern.Domain.Features.Users.Commands;
-using CqrsPattern.Domain.Features.Users.Handlers;
 using CqrsPattern.Domain.Features.Users.Models;
 using CqrsPattern.Domain.Features.Users.Repository;
 using Microsoft.AspNetCore.Mvc;
