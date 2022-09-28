@@ -1,40 +1,59 @@
-﻿using CqrsPattern.Domain.Users.Repository;
+﻿using CqrsPattern.Domain.Users.Models;
+using CqrsPattern.Domain.Users.Repository;
 using NotificationPattern.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace NotificationPattern.Domain.Users.Repository
+namespace NotificationPattern.Domain.Users.Repository;
+
+public class UserRepository : IUserRepository
 {
-    public class UserRepository : IUserRepository
+    private static readonly List<User> _users = new();
+
+    public IEnumerable<UserItem> FindUsers(UserParameters parameters)
     {
-        private static readonly List<User> _users = new();
+        var query = _users.AsQueryable();
 
-        public void Add(User user)
+        if (parameters.Name is not null)
         {
-            _users.Add(user);
+            query = query.Where(u =>
+                u.FirstName.StartsWith(parameters.Name) ||
+                u.LastName.StartsWith(parameters.Name)
+                );
         }
 
-        public User GetById(Guid id)
+        var items = query.Select(u => new UserItem
         {
-            return _users.FirstOrDefault(u => u.Id == id);
-        }
+            Id = u.Id,
+            FirstName = u.FirstName,
+            LastName = u.LastName
+        });
 
-        public void Update(User user)
-        {
-            var currentUser = GetById(user.Id);
+        return items;
+    }
 
-            if (currentUser != null) currentUser = user;
-        }
+    public void Add(User user)
+    {
+        _users.Add(user);
+    }
 
-        public bool AnyUser(Guid userId)
-        {
-            return _users.Any(u => u.Id == userId);
-        }
+    public User? GetById(Guid id)
+    {
+        return _users.FirstOrDefault(u => u.Id == id);
+    }
 
-        public void Remove(User user)
-        {
-            _users.Remove(user);
-        }
+    public void Update(User user)
+    {
+        var currentUser = GetById(user.Id);
+
+        if (currentUser != null) currentUser = user;
+    }
+
+    public bool AnyUser(Guid userId)
+    {
+        return _users.Any(u => u.Id == userId);
+    }
+
+    public void Remove(User user)
+    {
+        _users.Remove(user);
     }
 }

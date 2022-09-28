@@ -1,10 +1,9 @@
 using System;
 
-namespace CqrsPattern.Domain.Users.Events
+namespace CqrsPattern.Domain.Users.Events;
+
+public class UserPasswordUpdated
 {
-    public class UserPasswordUpdated
-    {
-        public Guid Id { get; set; }
-        public string Password { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string Password { get; set; } = default!;
 }

@@ -4,129 +4,129 @@ using CqrsPattern.Domain.Users.Repository;
 using NotificationPattern.Domain.Entities;
 using System;
 
-namespace CqrsPattern.Domain.Users.Handlers
+namespace CqrsPattern.Domain.Users.Handlers;
+
+public class UserCommandsHandler
 {
-    public class UserCommandsHandler
+    private readonly IUserRepository _userRepository;
+    private readonly UserEventsHandler _userEventsHandler;
+
+    public UserCommandsHandler(IUserRepository userRepository, UserEventsHandler userEventsHandler)
     {
-        private readonly IUserRepository _userRepository;
-        private readonly UserEventsHandler _userEventsHandler;
+        _userRepository = userRepository;
+        _userEventsHandler = userEventsHandler;
+    }
 
-        public UserCommandsHandler(IUserRepository userRepository, UserEventsHandler userEventsHandler)
-        {
-            _userRepository = userRepository;
-            _userEventsHandler = userEventsHandler;
-        }
+    public User Handle(CreateUser request)
+    {
+        // validations...
 
-        public User Handle(CreateUser request)
-        {
-            // validations...
+        // business logic...
 
-            // business logic...
-
-            var user = new User(
-                firstName: request.FirstName,
-                lastName: request.LastName,
-                email: request.Email,
-                password: request.Password,
-                birthDate: request.BirthDate
-                );
-
-            _userRepository.Add(user);
-
-            // send event
-
-            var userCreated = new UserCreated
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                BirthDate = user.BirthDate,
-                Email = user.Email,
-                Password = user.Password  
-            };
-
-            _userEventsHandler.Handle(userCreated);
-
-            return user;
-        }
-
-        public void Handle(UpdateUserDetails request)
-        {
-            // validations...
-
-            // business logic
-
-            var user = _userRepository.GetById(request.Id);
-
-            if (user is null)
-                throw new ArgumentNullException(nameof(user));
-
-            user.UpdateDetails(
-                firstName: request.FirstName,
-                lastName: request.LastName,
-                email: request.Email,
-                birthDate: request.BirthDate
+        var user = new User(
+            firstName: request.FirstName,
+            lastName: request.LastName,
+            email: request.Email,
+            password: request.Password,
+            birthDate: request.BirthDate
             );
 
-            _userRepository.Update(user);
+        _userRepository.Add(user);
 
-            // send event
+        // send event
 
-            var userDetailsUpdated = new UserDetailsUpdated
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                BirthDate = user.BirthDate,
-                Email = user.Email
-            };
-
-            _userEventsHandler.Handle(userDetailsUpdated);
-        }
-
-        public void Handle(UpdateUserPassword request)
+        var userCreated = new UserCreated
         {
-            // validations
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            BirthDate = user.BirthDate,
+            Email = user.Email,
+            Password = user.Password
+        };
 
-            var user = _userRepository.GetById(request.Id);
+        _userEventsHandler.Handle(userCreated);
 
-            if (user is null)
-                throw new ArgumentNullException(nameof(user));
+        return user;
+    }
 
-            user.UpdatePassword(request.Password);
+    public void Handle(UpdateUserDetails request)
+    {
+        // validations...
 
-            _userRepository.Update(user);
+        // business logic
 
-            // send event
+        var user = _userRepository.GetById(request.Id);
 
-            var userPasswordUpdated = new UserPasswordUpdated
-            {
-                Id = user.Id,
-                Password = user.Password  
-            };
+        if (user is null)
+            throw new ArgumentNullException(nameof(user));
 
-            _userEventsHandler.Handle(userPasswordUpdated);
-        }
+        user.UpdateDetails(
+            firstName: request.FirstName,
+            lastName: request.LastName,
+            email: request.Email,
+            birthDate: request.BirthDate
+        );
 
-        public void Handle(RemoveUser request)
+        _userRepository.Update(user);
+
+        // send event
+
+        var userDetailsUpdated = new UserDetailsUpdated
         {
-            // validations
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            BirthDate = user.BirthDate,
+            Email = user.Email
+        };
 
-            var user = _userRepository.GetById(request.Id);
+        _userEventsHandler.Handle(userDetailsUpdated);
+    }
 
-            if (user is null)
-                throw new ArgumentNullException(nameof(user));
+    public void Handle(UpdateUserPassword request)
+    {
+        // validations
 
-            _userRepository.Remove(user);
+        var user = _userRepository.GetById(request.Id);
 
-            // send event
+        if (user is null)
+            throw new ArgumentNullException(nameof(user));
 
-            var userRemoved = new UserRemoved
-            {
-                Id = user.Id
-            };
+        user.UpdatePassword(request.Password);
 
-            _userEventsHandler.Handle(userRemoved);
-        }
+        _userRepository.Update(user);
+
+        // send event
+
+        var userPasswordUpdated = new UserPasswordUpdated
+        {
+            Id = user.Id,
+            Password = user.Password
+        };
+
+        _userEventsHandler.Handle(userPasswordUpdated);
+    }
+
+    public void Handle(RemoveUser request)
+    {
+        // validations
+
+        var user = _userRepository.GetById(request.Id);
+
+        if (user is null)
+            throw new ArgumentNullException(nameof(user));
+
+        _userRepository.Remove(user);
+
+        // send event
+
+        var userRemoved = new UserRemoved
+        {
+            Id = user.Id
+        };
+
+        _userEventsHandler.Handle(userRemoved);
     }
 }
+

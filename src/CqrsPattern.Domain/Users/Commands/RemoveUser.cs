@@ -1,9 +1,8 @@
 using System;
 
-namespace CqrsPattern.Domain.Users.Commands
+namespace CqrsPattern.Domain.Users.Commands;
+
+public class RemoveUser
 {
-    public class RemoveUser
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }
