@@ -1,6 +1,6 @@
 using System;
 
-namespace CqrsPattern.Domain.Users.Commands;
+namespace CqrsPattern.Domain.Features.Users.Commands;
 
 public class RemoveUser
 {

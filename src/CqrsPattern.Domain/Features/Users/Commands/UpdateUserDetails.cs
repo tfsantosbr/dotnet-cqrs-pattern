@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
-namespace CqrsPattern.Domain.Users.Events;
+namespace CqrsPattern.Domain.Features.Users.Commands;
 
-public class UserDetailsUpdated
+public class UpdateUserDetails
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; } = default!;

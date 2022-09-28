@@ -1,10 +1,10 @@
-﻿using CqrsPattern.Domain.Users.Commands;
-using CqrsPattern.Domain.Users.Events;
-using CqrsPattern.Domain.Users.Repository;
+﻿using CqrsPattern.Domain.Features.Users.Commands;
+using CqrsPattern.Domain.Features.Users.Events;
+using CqrsPattern.Domain.Features.Users.Repository;
 using NotificationPattern.Domain.Entities;
 using System;
 
-namespace CqrsPattern.Domain.Users.Handlers;
+namespace CqrsPattern.Domain.Features.Users.Handlers;
 
 public class UserCommandsHandler
 {

@@ -1,7 +1,7 @@
-﻿using CqrsPattern.Domain.Users.Commands;
-using CqrsPattern.Domain.Users.Handlers;
-using CqrsPattern.Domain.Users.Models;
-using CqrsPattern.Domain.Users.Repository;
+﻿using CqrsPattern.Domain.Features.Users.Commands;
+using CqrsPattern.Domain.Features.Users.Handlers;
+using CqrsPattern.Domain.Features.Users.Models;
+using CqrsPattern.Domain.Features.Users.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CqrsPattern.Api.Controllers;

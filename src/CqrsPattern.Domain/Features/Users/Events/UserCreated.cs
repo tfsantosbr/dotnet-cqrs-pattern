@@ -1,6 +1,6 @@
 using System;
 
-namespace CqrsPattern.Domain.Users.Events;
+namespace CqrsPattern.Domain.Features.Users.Events;
 
 public class UserCreated
 {

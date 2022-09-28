@@ -1,8 +1,8 @@
-﻿using CqrsPattern.Domain.Users.Models;
-using CqrsPattern.Domain.Users.Repository;
+﻿using CqrsPattern.Domain.Features.Users.Models;
+using CqrsPattern.Domain.Features.Users.Repository;
 using NotificationPattern.Domain.Entities;
 
-namespace NotificationPattern.Domain.Users.Repository;
+namespace NotificationPattern.Domain.Features.Users.Repository;
 
 public class UserRepository : IUserRepository
 {

@@ -1,8 +1,8 @@
 using System;
-using CqrsPattern.Domain.Users.Models;
+using CqrsPattern.Domain.Features.Users.Models;
 using NotificationPattern.Domain.Entities;
 
-namespace CqrsPattern.Domain.Users.Repository;
+namespace CqrsPattern.Domain.Features.Users.Repository;
 
 public interface IUserRepository
 {

@@ -1,12 +1,12 @@
 using System;
 
-namespace CqrsPattern.Domain.Users.Models;
+namespace CqrsPattern.Domain.Features.Users.Events;
 
-public class UserDetails
+public class UserDetailsUpdated
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
     public string Email { get; set; } = default!;
-    public string BirthDate { get; set; } = default!;
-};
+    public DateTime BirthDate { get; set; }
+}

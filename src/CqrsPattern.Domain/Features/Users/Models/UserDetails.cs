@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 
-namespace CqrsPattern.Domain.Users.Commands;
+namespace CqrsPattern.Domain.Features.Users.Models;
 
-public class UpdateUserDetails
+public class UserDetails
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
     public string Email { get; set; } = default!;
-    public DateTime BirthDate { get; set; }
-}
+    public string BirthDate { get; set; } = default!;
+};

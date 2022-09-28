@@ -1,4 +1,4 @@
-namespace CqrsPattern.Domain.Users.Models;
+namespace CqrsPattern.Domain.Features.Users.Models;
 
 public class UserParameters
 {
