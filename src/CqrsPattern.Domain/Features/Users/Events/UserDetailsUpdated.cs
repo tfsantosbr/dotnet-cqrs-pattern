@@ -1,8 +1,9 @@
 using System;
+using CqrsPattern.Domain.Base.Handlers;
 
 namespace CqrsPattern.Domain.Features.Users.Events;
 
-public class UserDetailsUpdated
+public class UserDetailsUpdated : IEvent
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; } = default!;

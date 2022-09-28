@@ -1,8 +1,10 @@
-﻿using CqrsPattern.Domain.Features.Users.Commands;
+﻿using CqrsPattern.Domain.Base.Handlers;
+using CqrsPattern.Domain.Features.Users.Commands;
 using CqrsPattern.Domain.Features.Users.Handlers;
 using CqrsPattern.Domain.Features.Users.Models;
 using CqrsPattern.Domain.Features.Users.Repository;
 using Microsoft.AspNetCore.Mvc;
+using NotificationPattern.Domain.Entities;
 
 namespace CqrsPattern.Api.Controllers;
 
@@ -10,13 +12,24 @@ namespace CqrsPattern.Api.Controllers;
 [Route("users")]
 public class UsersController : ControllerBase
 {
-    private readonly UserCommandsHandler _handler;
     private readonly IUserRepository _userRepository;
+    private readonly ICommandHandler<CreateUser, User> _createUserCommandHandler;
+    private readonly ICommandHandler<UpdateUserDetails> _updateUserDetailsCommandHandler;
+    private readonly ICommandHandler<UpdateUserPassword> _updateUserPasswordCommandHandler;
+    private readonly ICommandHandler<RemoveUser> _removeUserCommandHandler;
 
-    public UsersController(UserCommandsHandler handler, IUserRepository userRepository)
+    public UsersController(
+        IUserRepository userRepository, 
+        ICommandHandler<CreateUser, User> createUserCommandHandler, 
+        ICommandHandler<UpdateUserDetails> updateUserDetailsCommandHandler, 
+        ICommandHandler<UpdateUserPassword> updateUserPasswordCommandHandler, 
+        ICommandHandler<RemoveUser> removeUserCommandHandler)
     {
-        _handler = handler;
         _userRepository = userRepository;
+        _createUserCommandHandler = createUserCommandHandler;
+        _updateUserDetailsCommandHandler = updateUserDetailsCommandHandler;
+        _updateUserPasswordCommandHandler = updateUserPasswordCommandHandler;
+        _removeUserCommandHandler = removeUserCommandHandler;
     }
 
     [HttpGet]
@@ -28,17 +41,17 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateUser(CreateUser request)
+    public async Task<IActionResult> CreateUser(CreateUser request, CancellationToken cancellationToken)
     {
-        var user = _handler.Handle(request);
+        var createdUser = await _createUserCommandHandler.Handle(request, cancellationToken);
 
         var userDetails = new UserDetails
         {
-            Id = user.Id,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-            BirthDate = $"{user.BirthDate:yyyy-MM-dd}",
-            Email = user.Email
+            Id = createdUser.Id,
+            FirstName = createdUser.FirstName,
+            LastName = createdUser.LastName,
+            BirthDate = $"{createdUser.BirthDate:yyyy-MM-dd}",
+            Email = createdUser.Email
         };
 
         return Created($"users/{userDetails.Id}", userDetails);
@@ -70,7 +83,7 @@ public class UsersController : ControllerBase
         if (!_userRepository.AnyUser(userId))
             return NotFound();
 
-        _handler.Handle(new RemoveUser { Id = userId });
+        _removeUserCommandHandler.Handle(new RemoveUser { Id = userId });
 
         return NoContent();
     }
@@ -83,7 +96,7 @@ public class UsersController : ControllerBase
             return NotFound();
         }
 
-        _handler.Handle(request);
+        _updateUserDetailsCommandHandler.Handle(request);
 
         return NoContent();
     }
@@ -96,7 +109,7 @@ public class UsersController : ControllerBase
             return NotFound();
         }
 
-        _handler.Handle(request);
+        _updateUserPasswordCommandHandler.Handle(request);
 
         return NoContent();
     }

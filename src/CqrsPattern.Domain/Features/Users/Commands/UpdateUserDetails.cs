@@ -1,8 +1,9 @@
 ﻿using System;
+using CqrsPattern.Domain.Base.Handlers;
 
 namespace CqrsPattern.Domain.Features.Users.Commands;
 
-public class UpdateUserDetails
+public class UpdateUserDetails : ICommand
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; } = default!;
